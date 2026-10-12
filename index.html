@@ -520,7 +520,7 @@ function renderIntro() {
       <ol class="persp">
         ${ARCH.map((a, k) => `<li>${swatch(k)}<div><b>${a.name}</b><span class="t">${a.tag}</span></div></li>`).join("")}
       </ol>
-      <p class="note">The order runs roughly from seeing nuclear weapons as a danger to seeing them as a safeguard. It is not a strict line. Views on stopping spread and on arms control cut across it. Real people mix several of these, and informed experts disagree about all of them.</p>
+      <p class="note">The order runs roughly from seeing nuclear weapons as a danger to seeing them as a safeguard.</p>
     </div>
     ${footer()}`;
   document.getElementById("start").onclick = () => { state.screen = "quiz"; state.i = 0; render(); };
