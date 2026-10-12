@@ -1,0 +1,698 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Nuclear Policy Spectrum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one left-aligned reading column. The eight-segment spectrum ramp is the identity;
+   each perspective owns one segment color, ordered roughly from "danger" to "safeguard". */
+:root{
+  --bg:#EDF1F1; --surface:#F9FBFB; --ink:#13242C; --muted:#4D5F67; --line:#C7D2D3; --soft:#DDE7E8;
+  --accent:#0E5A70; --accent-ink:#FFFFFF;
+  --c1:#2F5BC4; --c2:#1E78A0; --c3:#12877A; --c4:#4A9650; --c5:#7F8A1C; --c6:#A97E0B; --c7:#C0691A; --c8:#B24427;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1B20; --surface:#16262C; --ink:#E6EEEF; --muted:#9DB0B6; --line:#2C3F46; --soft:#1C3038;
+    --accent:#5BB8D4; --accent-ink:#0B1A20;
+    --c1:#7C9CF0; --c2:#55A8CF; --c3:#3CC0AC; --c4:#7CC47F; --c5:#BCC95A; --c6:#E3BC48; --c7:#EE9B52; --c8:#E5775A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1B20; --surface:#16262C; --ink:#E6EEEF; --muted:#9DB0B6; --line:#2C3F46; --soft:#1C3038;
+  --accent:#5BB8D4; --accent-ink:#0B1A20;
+  --c1:#7C9CF0; --c2:#55A8CF; --c3:#3CC0AC; --c4:#7CC47F; --c5:#BCC95A; --c6:#E3BC48; --c7:#EE9B52; --c8:#E5775A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:44rem;margin-inline:auto;padding-inline:16px;padding-block:clamp(28px,6vw,64px) 72px;display:flex;flex-direction:column;gap:2.5rem}
+h1,h2,h3,h4{font-family:var(--display);font-weight:500;letter-spacing:-.01em;line-height:1.12;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.2rem,6.4vw,3.4rem)}
+h2{font-size:clamp(1.55rem,4.4vw,2.15rem)}
+h3{font-size:1.4rem}
+h4{font-size:1.1rem}
+h1:focus,h2:focus{outline:none}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:1.125rem;color:var(--muted);max-width:38rem}
+.stack{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.stack-lg{display:flex;flex-direction:column;gap:1.5rem;min-width:0}
+a{color:var(--accent);text-underline-offset:3px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* spectrum ramp */
+.ramp{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;height:12px}
+.ramp span{position:relative;display:block;border-radius:2px}
+.ramp .here::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:5px;border:7px solid transparent;border-top:0;border-bottom-color:var(--ink)}
+.ramp-wrap{display:flex;flex-direction:column;gap:.4rem;padding-bottom:16px}
+.ramp-ends{display:flex;justify-content:space-between;gap:1rem;margin-top:1.1rem}
+
+/* perspectives list */
+.persp{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.persp li{display:grid;grid-template-columns:.9rem 1fr;gap:.75rem;padding-block:.7rem;border-top:1px solid var(--line);min-width:0}
+.persp li:last-child{border-bottom:1px solid var(--line)}
+.sw{width:.9rem;height:.9rem;border-radius:3px;margin-top:.3rem;flex:none}
+.persp b{font-family:var(--display);font-weight:600;font-size:1.1rem;display:block}
+.persp span.t{color:var(--muted);font-size:.95rem}
+
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.25rem}
+.btn{font-weight:600;padding:.85rem 1.4rem;border-radius:8px;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.ghost:hover{background:var(--soft);filter:none}
+.link{background:none;border:0;padding:.25rem 0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.link:disabled{opacity:.4;cursor:default;text-decoration:none}
+.note{font-size:.9rem;color:var(--muted);max-width:38rem}
+
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.prog{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
+.prog i{display:block;height:4px;border-radius:2px;background:var(--line)}
+.prog i.on{background:var(--accent)}
+.ctx{display:grid;gap:.25rem;color:var(--muted);font-size:.95rem;max-width:38rem}
+.opts{display:flex;flex-direction:column;gap:.7rem;margin:0;padding:0;list-style:none}
+.opt{display:grid;grid-template-columns:1.7rem 1fr;gap:.85rem;align-items:start;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--ink)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
+.key{font-family:var(--mono);font-size:.75rem;width:1.7rem;height:1.7rem;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;color:var(--muted);margin-top:.05rem}
+.opt[aria-pressed="true"] .key{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.opt span.txt{min-width:0}
+
+/* results */
+.hero-name{display:flex;flex-direction:column;gap:.6rem}
+.tagline{font-family:var(--display);font-style:italic;font-size:1.3rem;line-height:1.35;color:var(--muted);max-width:36rem}
+.sec{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.sec > h3{padding-top:.25rem}
+.bul{margin:0;padding-left:1.15rem;display:flex;flex-direction:column;gap:.55rem}
+.bul li{padding-left:.2rem}
+.axis{display:grid;gap:.45rem;min-width:0}
+.axis .track{position:relative;height:2px;background:var(--line);margin-block:12px}
+.axis .track::before{content:"";position:absolute;left:50%;top:-5px;width:2px;height:12px;background:var(--line)}
+.axis .dot{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);transform:translate(-50%,-50%)}
+.axis .ends{display:flex;justify-content:space-between;gap:1rem;font-size:.88rem;color:var(--muted)}
+.axis .ends span:last-child{text-align:right}
+.read{display:grid;gap:.2rem;padding-block:.8rem;border-top:1px solid var(--line);min-width:0}
+.read:last-child{border-bottom:1px solid var(--line)}
+.read cite{font-family:var(--display);font-style:normal;font-size:1.12rem;font-weight:500;line-height:1.3;overflow-wrap:anywhere}
+.read .by{font-size:.9rem;color:var(--muted)}
+.read .why{font-size:.95rem}
+.grp{display:flex;align-items:center;gap:.6rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1rem 1.15rem;display:flex;flex-direction:column;gap:.6rem}
+details.fold{border-top:1px solid var(--line)}
+details.fold:last-of-type{border-bottom:1px solid var(--line)}
+details.fold > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:.9rem 1fr auto;gap:.75rem;align-items:start;padding-block:.9rem}
+details.fold > summary::-webkit-details-marker{display:none}
+details.fold > summary::after{content:"+";font-family:var(--mono);color:var(--muted);font-size:1.1rem;line-height:1.3}
+details.fold[open] > summary::after{content:"\2212"}
+.fold-body{display:flex;flex-direction:column;gap:1.25rem;padding-bottom:1.5rem;padding-left:1.65rem}
+.badge{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:.1rem .4rem;margin-left:.5rem;vertical-align:middle}
+textarea.cp{width:100%;min-height:5rem;font:inherit;font-size:.9rem;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.6rem}
+footer.disc{border-top:1px solid var(--line);padding-top:1.25rem;display:flex;flex-direction:column;gap:.5rem}
+@media (prefers-reduced-motion:reduce){.opt{transition:none}}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+/*DATA_START*/
+const AXES = {
+  V: { name: "What nuclear weapons mostly are", lo: "Mostly a danger", hi: "Mostly a safeguard" },
+  F: { name: "What arsenals should do next", lo: "Shrink and restrain", hi: "Build and modernize" },
+  M: { name: "How to deal with rivals", lo: "Treaties and institutions", hi: "Strength and self-reliance" },
+  P: { name: "How worried to be about spread", lo: "Spread is tolerable", hi: "Spread is the top threat" }
+};
+const WEIGHTS = { V: 1.2, F: 1.2, M: 1, P: 0.9 };
+
+const QUESTIONS = [
+  { q: "Nuclear weapons have not been used in war since 1945. What best explains that?",
+    ctx: "Nuclear weapons were used in war twice, at Hiroshima and Nagasaki in August 1945, and never since.",
+    opts: [
+      { t: "Mostly luck. There were close calls, and luck does not last forever.", v: { V: -2 } },
+      { t: "A powerful taboo has built up against using them. It matters, but it could erode.", v: { V: -0.7, M: -0.8 } },
+      { t: "Deterrence has worked, though it takes constant effort to keep working.", v: { V: 1 } },
+      { t: "Fear of retaliation is the main reason great powers have avoided war with each other.", v: { V: 2 } }
+    ] },
+  { q: "How large an arsenal does a nuclear-armed country need?",
+    ctx: "Global stockpiles peaked at roughly 70,000 warheads in the mid-1980s and are now around 12,000, with the United States and Russia holding most of them. Source: <a href='https://fas.org/initiative/status-world-nuclear-forces/' target='_blank' rel='noopener noreferrer'>Federation of American Scientists, Status of World Nuclear Forces</a> (estimates for early 2026).",
+    opts: [
+      { t: "None. Possession cannot be justified at any size.", v: { V: -2, F: -2 } },
+      { t: "As few as possible, falling over time as trust and verification improve.", v: { V: -1, F: -1.5 } },
+      { t: "A small force that can survive an attack and strike back.", v: { V: 1, F: -1.3 } },
+      { t: "Enough to deter every scenario and to keep pace with rivals' improvements.", v: { V: 1.8, F: 1.8 } }
+    ] },
+  { q: "What role should treaties and talks with nuclear rivals play?",
+    ctx: "Arms control includes formal treaties, informal limits, hotlines, data exchanges and inspections.",
+    opts: [
+      { t: "A central one. Even imperfect agreements lower risk and keep channels open.", v: { M: -2, F: -0.5 } },
+      { t: "A useful one when they are verifiable and mutual, but no substitute for a strong arsenal.", v: { M: -0.5, F: 0.3 } },
+      { t: "A limited one. Rivals cheat or ignore them, so strength matters more than paper.", v: { M: 1.5, F: 1.2 } },
+      { t: "A smaller one than pressure from the wider world. Global norms and treaties should push nuclear states to disarm.", v: { M: -0.8, F: -1.5, V: -1.5 } }
+    ] },
+  { q: "Should nuclear states promise never to use nuclear weapons first?",
+    ctx: "China and India have declared no-first-use policies. The United States, Russia, the UK and France have not.",
+    opts: [
+      { t: "Yes. Say so publicly and change forces and plans to match.", v: { F: -1.5, M: -0.5, V: -0.5 } },
+      { t: "Only through negotiation, with allies on board and verification in place.", v: { F: -0.5, M: -1.2 } },
+      { t: "No promise, but end hair-trigger readiness so no one can launch by mistake or in a panic.", v: { F: -0.8, V: 0, M: -0.5 } },
+      { t: "No. Uncertainty about when you might use them helps deter many kinds of attack.", v: { F: 1.5, V: 1.5, M: 1 } }
+    ] },
+  { q: "How serious is the risk of accidents and miscalculation?",
+    ctx: "Officials and historians have documented false alarms and near misses, such as the <a href='https://www.jfklibrary.org/learn/about-jfk/jfk-in-history/cuban-missile-crisis' target='_blank' rel='noopener noreferrer'>1962 Cuban Missile Crisis</a>, when the US and the Soviet Union came close to war over missiles in Cuba, and the 1983 Soviet early-warning false alarm. In the United States, launch authority rests with the president.",
+    opts: [
+      { t: "It is the core problem. The risk is unacceptable, and only elimination removes it.", v: { V: -2, F: -2 } },
+      { t: "Serious but fixable. Lower alert levels, check launch authority and harden command systems.", v: { V: -0.2, F: -1.2, M: -0.5 } },
+      { t: "Real but well managed. Weakening readiness would cost more than it saves.", v: { V: 1.5, F: 1 } },
+      { t: "Overstated. Leaders have strong reasons to be careful, and so far they have been.", v: { V: 2, F: 0.3 } }
+    ] },
+  { q: "Should more countries be allowed to have nuclear weapons?",
+    ctx: "Among the states widely reported to have nuclear weapons are the US, Russia, the UK, France, China, India, Pakistan and North Korea.",
+    opts: [
+      { t: "No. Each new nuclear state raises the risk, so the world should work to stop and reverse spread.", v: { P: 2 } },
+      { t: "No, and the nuclear powers must also keep their promise to reduce their own arsenals.", v: { P: 1, M: -1.5, F: -1 } },
+      { t: "Case by case. Some allies facing serious threats may reasonably want their own.", v: { P: -0.5, V: 1.5, M: 0.8 } },
+      { t: "Possibly. New nuclear states tend to become cautious, and that can calm a region.", v: { P: -2, V: 1.5 } }
+    ] },
+  { q: "A country with a disputed nuclear program edges closer to a bomb. What should others do?",
+    ctx: "Tools range from inspections and negotiated limits to sanctions and, in rare cases, military strikes.",
+    opts: [
+      { t: "Negotiate inspections and limits, and offer sanctions relief in return.", v: { P: 1.5, M: -1.8 } },
+      { t: "Apply heavy sanctions and keep military force openly on the table.", v: { P: 2, M: 1.3 } },
+      { t: "Hold firm, and also cut nuclear arsenals so the demand to stay non-nuclear is credible.", v: { P: 0.8, F: -1.5, M: -1 } },
+      { t: "Stay calm. Prevention matters less than people think, and a new nuclear state often becomes cautious.", v: { P: -1.8, V: 1.2 } }
+    ] },
+  { q: "Nuclear-armed states are replacing and modernizing aging warheads, missiles, submarines and bombers. What is your reaction?",
+    ctx: "Most nuclear-armed states are upgrading their arsenals, and some are expanding them.",
+    opts: [
+      { t: "Stop. Modernizing locks in nuclear weapons for decades.", v: { F: -2, V: -1.5 } },
+      { t: "Replace only what safety and reliability require, and skip new capabilities.", v: { F: -1, V: 0.3 } },
+      { t: "Replace what a credible deterrent needs, then seek talks to limit any build-up.", v: { F: 0.2, M: -1, V: 0.8 } },
+      { t: "Modernize fully and add flexible options. Falling behind invites coercion.", v: { F: 2, M: 1.3, V: 1.5 } }
+    ] },
+  { q: "Which outcome worries you most?",
+    ctx: "Experts disagree about which risk is largest. This asks which one you would lose the most sleep over.",
+    opts: [
+      { t: "A nuclear war, by accident or escalation, that kills hundreds of millions of people.", v: { V: -1.5 } },
+      { t: "A nuclear weapon reaching terrorists or an unstable government.", v: { P: 2 } },
+      { t: "A rival that thinks it can coerce or attack your country or its allies because it doubts your strength.", v: { V: 1.5, M: 1.2, F: 1 } },
+      { t: "An arms race that wastes money and leaves everyone less secure.", v: { F: -1.5, M: -0.5 } }
+    ] },
+  { q: "Is a world without nuclear weapons desirable and achievable?",
+    ctx: "In 2017, 122 countries voted to adopt the Treaty on the Prohibition of Nuclear Weapons. No nuclear-armed state and no NATO member has joined it.",
+    opts: [
+      { t: "Yes. Negotiate a ban now and treat possession as illegitimate.", v: { V: -2, F: -2, M: -0.5 } },
+      { t: "As a long-term goal, reached through verified steps and trust built over decades.", v: { V: -1, F: -1.4, M: -1.4 } },
+      { t: "Possibly desirable, but not realistic. Weapons cannot be uninvented, and cheating or breakout would be dangerous.", v: { V: 1, F: 0, M: 0 } },
+      { t: "No. Nuclear weapons keep major powers from fighting, and removing them would make large wars thinkable again.", v: { V: 2, F: 1 } }
+    ] },
+  { q: "How should the humanitarian effects of nuclear war shape policy?",
+    ctx: "Studies of nuclear war model blast, fire, radiation and possible climate effects. People weigh that evidence differently.",
+    opts: [
+      { t: "They should be central. They are the moral case against having these weapons at all.", v: { V: -2, F: -1.5 } },
+      { t: "They justify urgent steps to reduce the chance of use, even while arsenals remain.", v: { V: -0.3, F: -1, M: -0.5 } },
+      { t: "They are exactly why deterrence matters. The aim is that no one ever dares start such a war.", v: { V: 1.5 } },
+      { t: "They are one factor among many. Policy should rest mainly on strategy and security.", v: { V: 1, M: 0.5 } }
+    ] },
+  { q: "How should allies think about nuclear umbrellas?",
+    ctx: "A nuclear umbrella, also called extended deterrence, is a pledge by a nuclear-armed country to use its nuclear weapons if needed to defend an ally that has none of its own. The United States extends one to NATO members, Japan and South Korea. Some analysts credit this with keeping those countries from building their own weapons.",
+    opts: [
+      { t: "Move away from it. Allies should not rely on nuclear threats.", v: { V: -1, F: -1, M: -1 } },
+      { t: "Keep it and reassure allies, because it stops them from building their own weapons.", v: { P: 1.5, V: 0.5, M: -0.3 } },
+      { t: "Strengthen it. Protecting allies requires a credible and robust arsenal.", v: { V: 1.5, F: 1.5, M: 1.2 } },
+      { t: "Consider their own deterrent. Depending on another country's weapons is risky.", v: { V: 1.5, P: -1.2, M: 1 } }
+    ] }
+];
+
+/* Ranking votes. One row per question, one entry per answer option, in the same order as QUESTIONS.
+   Primary home = 2, secondary = 1. Codes: AB abolitionist, GR gradualist, RR riskreducer, AC armscontrol,
+   NP npguardian, MN minimalist, RE realist, MD modernizer. */
+const CODE = { abolitionist: "AB", gradualist: "GR", riskreducer: "RR", armscontrol: "AC", npguardian: "NP", minimalist: "MN", realist: "RE", modernizer: "MD" };
+const VOTES = [
+  [{ AB: 2, RR: 1, GR: 1 }, { GR: 2, AB: 1, AC: 1 }, { AC: 2, MN: 1, NP: 1 }, { RE: 2, MD: 1, MN: 1 }],
+  [{ AB: 2 }, { GR: 2, RR: 1, AC: 1 }, { MN: 2, RR: 1, AC: 1 }, { MD: 2, NP: 1 }],
+  [{ AC: 2, GR: 1, RR: 1 }, { AC: 1, NP: 1, MN: 1 }, { MD: 2, RE: 1 }, { AB: 2, GR: 1 }],
+  [{ MN: 2, GR: 1, AB: 1 }, { AC: 2, NP: 1, GR: 1 }, { RR: 2, AC: 1 }, { MD: 2, RE: 1 }],
+  [{ AB: 2, GR: 1 }, { RR: 2, GR: 1, AC: 1, MN: 1 }, { MD: 2, NP: 1, AC: 1 }, { RE: 2, MD: 1 }],
+  [{ NP: 2, MD: 1 }, { GR: 2, AB: 1, AC: 1 }, { RE: 2, MD: 1 }, { RE: 2, MN: 1 }],
+  [{ AC: 2, NP: 1, GR: 1 }, { NP: 2, MD: 1 }, { GR: 2, AB: 1 }, { RE: 2, MN: 1 }],
+  [{ AB: 2, GR: 1 }, { MN: 2, RR: 1, GR: 1 }, { AC: 2, NP: 1, RR: 1 }, { MD: 2 }],
+  [{ RR: 2, AB: 1, GR: 1 }, { NP: 2, AC: 1 }, { MD: 2, RE: 1 }, { MN: 2, AC: 1, GR: 1 }],
+  [{ AB: 2 }, { GR: 2, AC: 1, RR: 1 }, { AC: 1, NP: 1, MN: 1, RR: 1 }, { RE: 2, MD: 1 }],
+  [{ AB: 2, GR: 1 }, { RR: 2, GR: 1, AC: 1 }, { RE: 1, MD: 1, MN: 1, NP: 1 }, { RE: 1, NP: 1, MD: 1 }],
+  [{ MN: 1, AB: 1, GR: 1 }, { NP: 2, AC: 1 }, { MD: 2 }, { RE: 2, MD: 1 }]
+];
+
+const ARCH = [
+  { id: "abolitionist", name: "The Abolitionist", c: { V: -1.7, F: -1.7, M: -0.8, P: 0.9 },
+    tag: "Nuclear weapons should be banned and eliminated, and the case is moral as much as strategic.",
+    summary: "Abolitionists see nuclear weapons as unacceptable because of what they would do if used, and because any system that depends on them will eventually fail. They want possession treated as illegitimate, the way chemical and biological weapons are.",
+    beliefs: [
+      "The humanitarian consequences of use are so severe that no strategic benefit can justify the risk.",
+      "Deterrence has relied on luck as much as skill, and near misses are the evidence.",
+      "Prohibition and stigma can change behavior, even before every nuclear state is on board."
+    ],
+    asks: [
+      "If rivals will not disarm, what keeps your country safe in the meantime, and who sets the pace?",
+      "How would a ban be verified, and what stops a state from cheating or rebuilding in secret?",
+      "Could a world without nuclear weapons make large conventional wars between major powers more likely?"
+    ],
+    reads: [
+      { kind: "Book", title: "Five Myths About Nuclear Weapons", by: "Ward Wilson, 2013", why: "Takes apart common claims about why nuclear weapons keep us safe." },
+      { kind: "Book", title: "The Doomsday Machine", by: "Daniel Ellsberg, 2017", why: "A former nuclear war planner on how fragile the system is." },
+      { kind: "Book", title: "The Nuclear Taboo", by: "Nina Tannenwald, 2007", why: "How a norm against use developed, and how it might weaken." },
+      { kind: "Campaign", title: "ICAN, the International Campaign to Abolish Nuclear Weapons", by: "icanw.org", why: "The campaign behind the 2017 prohibition treaty, with the treaty text.", url: "https://www.icanw.org" }
+    ],
+    stress: ["modernizer", "realist"] },
+
+  { id: "gradualist", name: "The Path-to-Zero Gradualist", c: { V: -1.1, F: -1.4, M: -1.0, P: 0.9 },
+    tag: "A world without nuclear weapons is the right goal, reached step by step as conditions allow.",
+    summary: "Gradualists want elimination in the long run but expect it to take verification, trust and a changed security environment. They support deep cuts, tighter controls and negotiations, and treat zero as a direction of travel.",
+    beliefs: [
+      "Elimination is a worthwhile goal, but it cannot be rushed or declared into being.",
+      "Each step should be verifiable, so trust is built on evidence.",
+      "The countries with the largest arsenals have to lead."
+    ],
+    asks: [
+      "What conditions would have to hold before the last weapons are given up, and can they be met?",
+      "Does a long-term promise of zero weaken deterrence today, or give rivals a reason to hold out?",
+      "If the steps keep stalling, does the path ever arrive?"
+    ],
+    reads: [
+      { kind: "Article", title: "“A World Free of Nuclear Weapons”", by: "George Shultz, William Perry, Henry Kissinger and Sam Nunn, Wall Street Journal, 2007", why: "The op-ed that brought the goal of zero back into mainstream debate." },
+      { kind: "Book", title: "My Journey at the Nuclear Brink", by: "William Perry, 2015", why: "A former US Defense Secretary on why he came to favor deep reductions." },
+      { kind: "Speech", title: "Remarks in Prague", by: "Barack Obama, April 2009", why: "A sitting president commits to seeking a world without nuclear weapons, while keeping a deterrent as long as they exist." },
+      { kind: "Campaign", title: "Global Zero", by: "globalzero.org", why: "An advocacy group with phased plans for elimination.", url: "https://www.globalzero.org" }
+    ],
+    stress: ["modernizer", "realist"] },
+
+  { id: "riskreducer", name: "The Risk Reducer", c: { V: -0.5, F: -1.2, M: -0.85, P: 0.8 },
+    tag: "Whatever you think of deterrence, the system should be made safer against accidents, panic and mistakes.",
+    summary: "Risk reducers focus on how nuclear war might actually start: a false alarm, a cyber intrusion, a misread signal or a rushed decision. They back lower alert levels, tighter control of launch authority and better crisis communication, whatever their larger view of nuclear weapons.",
+    beliefs: [
+      "Nuclear war is more likely to begin by mistake or miscalculation than by deliberate plan.",
+      "Practical safeguards can be adopted without waiting for large political breakthroughs.",
+      "Less time pressure on leaders lowers the odds of disaster."
+    ],
+    asks: [
+      "Could lower readiness or added delays weaken deterrence, or tempt an adversary?",
+      "Have existing safeguards worked well enough that the remaining risk is acceptable?",
+      "Does a focus on fixes make nuclear weapons seem safe enough to keep indefinitely?"
+    ],
+    reads: [
+      { kind: "Book", title: "The Limits of Safety", by: "Scott Sagan, 1993", why: "Examines organizational failures and near accidents, and why complex systems break." },
+      { kind: "Book", title: "Command and Control", by: "Eric Schlosser, 2013", why: "A narrative history of American nuclear weapon accidents." },
+      { kind: "Book", title: "The Button", by: "William Perry and Tom Z. Collina, 2020", why: "Argues for changes to launch authority and alert posture." },
+      { kind: "Organization", title: "Union of Concerned Scientists", by: "ucs.org", why: "Analysis on launch authority, readiness and nuclear risk.", url: "https://www.ucs.org" }
+    ],
+    stress: ["modernizer", "realist"] },
+
+  { id: "armscontrol", name: "The Arms Control Pragmatist", c: { V: 0.8, F: -0.6, M: -1.1, P: 1.4 },
+    tag: "Keep deterrence, but manage the competition with treaties, talks and transparency.",
+    summary: "Arms control pragmatists accept that nuclear weapons exist and often help deter war. They argue that rivals are safer when they talk, verify each other and agree on limits. The aim is stability, not necessarily disarmament.",
+    beliefs: [
+      "Even adversaries share an interest in avoiding nuclear war and costly arms races.",
+      "Verification, data exchanges and hotlines reduce the chance of misreading a rival's intent.",
+      "Limits on the most destabilizing systems matter more than the exact numbers."
+    ],
+    asks: [
+      "What do you do when a rival will not negotiate, or cheats?",
+      "Do treaties lock in advantages for some states or constrain only those who comply?",
+      "With more nuclear powers and new technologies, do two-party treaties still fit the problem?"
+    ],
+    reads: [
+      { kind: "Book", title: "Strategy and Arms Control", by: "Thomas Schelling and Morton Halperin, 1961", why: "The classic argument that rivals can cooperate to make war less likely." },
+      { kind: "Book", title: "Negotiating the New START Treaty", by: "Rose Gottemoeller, 2021", why: "A negotiator's account of how a modern treaty gets built." },
+      { kind: "Book", title: "Winning and Losing the Nuclear Peace", by: "Michael Krepon, 2021", why: "A history of the rise, decline and revival of arms control." },
+      { kind: "Organization", title: "Arms Control Association", by: "armscontrol.org", why: "News, analysis and treaty explainers.", url: "https://www.armscontrol.org" }
+    ],
+    stress: ["modernizer", "abolitionist"] },
+
+  { id: "npguardian", name: "The Nonproliferation Guardian", c: { V: 0.8, F: -0.1, M: -0.5, P: 1.8 },
+    tag: "The most urgent job is stopping nuclear weapons from spreading to new states or groups.",
+    summary: "For nonproliferation guardians, each additional nuclear-armed state or terrorist group raises the chance of use. They support inspections, export controls, sanctions and alliances that give states reasons not to build the bomb.",
+    beliefs: [
+      "More nuclear-armed states means more chances for accidents, crises and theft.",
+      "The Non-Proliferation Treaty and IAEA inspections are valuable, even when imperfect.",
+      "Security guarantees and diplomacy can persuade states to stay non-nuclear."
+    ],
+    asks: [
+      "If prevention fails, what is the plan, and is coercion worth its own risks?",
+      "Does the nonproliferation system look fair to states told to give up weapons that others keep?",
+      "Do security guarantees make allies safer, or do they entangle the protector?"
+    ],
+    reads: [
+      { kind: "Book", title: "Nuclear Terrorism: The Ultimate Preventable Catastrophe", by: "Graham Allison, 2004", why: "Argues that nuclear terrorism can be prevented with focused effort." },
+      { kind: "Article", title: "“Why Do States Build Nuclear Weapons? Three Models in Search of a Bomb”", by: "Scott Sagan, International Security, 1996–97", why: "Three explanations for why states seek the bomb, and what each implies for policy." },
+      { kind: "Book", title: "Atomic Assistance", by: "Matthew Fuhrmann, 2012", why: "How civilian nuclear cooperation can end up helping weapons programs." },
+      { kind: "Organization", title: "Nuclear Threat Initiative", by: "nti.org", why: "Analysis and tools on nuclear materials and security.", url: "https://www.nti.org" }
+    ],
+    stress: ["realist", "abolitionist"] },
+
+  { id: "minimalist", name: "The Minimalist", c: { V: 0.7, F: -0.9, M: -0.2, P: 0.6 },
+    tag: "A small, survivable arsenal is enough to deter, and more than that adds risk and cost.",
+    summary: "Minimalists believe a modest force that could survive an attack and retaliate is sufficient. They question large arsenals, plans that aim to limit damage by striking first, and spending that does not add to security.",
+    beliefs: [
+      "The ability to retaliate, not the ability to win a nuclear war, is what deters.",
+      "Pursuing superiority prompts rivals to build more, leaving everyone less secure.",
+      "Doctrine and spending should match this reality instead of Cold War habit."
+    ],
+    asks: [
+      "Would adversaries be deterred by a small force if they believe they can limit the damage?",
+      "How does a smaller arsenal cope with rivals who are expanding or adding new capabilities, such as missile defenses?",
+      "Does a minimum posture protect allies, or push them toward their own weapons?"
+    ],
+    reads: [
+      { kind: "Book", title: "The Meaning of the Nuclear Revolution", by: "Robert Jervis, 1989", why: "Argues that mutual vulnerability makes nuclear superiority pointless." },
+      { kind: "Article", title: "“Should the United States Reject MAD?”", by: "Charles Glaser and Steve Fetter, International Security, 2016", why: "Weighs damage-limitation strategy against restraint, with China in view." },
+      { kind: "Book", title: "The Illogic of American Nuclear Strategy", by: "Robert Jervis, 1984", why: "A critique of war-fighting plans and why they may undercut deterrence." },
+      { kind: "Organization", title: "Ploughshares Fund", by: "ploughshares.org", why: "Funds and publishes work on reducing arsenals and nuclear risk.", url: "https://www.ploughshares.org" }
+    ],
+    stress: ["modernizer", "abolitionist"] },
+
+  { id: "realist", name: "The Structural Realist", c: { V: 1.5, F: 0.7, M: 0.3, P: -1.6 },
+    tag: "Nuclear weapons make states cautious, so deterrence is more stable than critics fear.",
+    summary: "Structural realists see nuclear weapons as a brake on great-power war, because no leader wants to risk national destruction. Some go further and argue that limited spread can reduce conflict. Most doubt that disarmament is realistic or even desirable.",
+    beliefs: [
+      "States behave cautiously when their survival is on the line.",
+      "Nuclear-armed states have rarely fought each other directly.",
+      "Fears of accidents and irrational leaders have not been borne out so far."
+    ],
+    asks: [
+      "Does the safe record so far prove deterrence is stable, or is it a small sample helped by luck?",
+      "Would new nuclear states have the control and safeguards your argument assumes?",
+      "How does your view handle terrorists, or leaders who take bigger risks than the theory predicts?"
+    ],
+    reads: [
+      { kind: "Book", title: "The Spread of Nuclear Weapons: A Debate Renewed", by: "Scott Sagan and Kenneth Waltz, 2003", why: "Two scholars disagree directly, which is a good way to see both positions." },
+      { kind: "Article", title: "“Why Iran Should Get the Bomb”", by: "Kenneth Waltz, Foreign Affairs, 2012", why: "A compact version of the argument that spread can stabilize." },
+      { kind: "Article", title: "“The Case for a Ukrainian Nuclear Deterrent”", by: "John Mearsheimer, Foreign Affairs, 1993", why: "Applies realist logic to a specific case." },
+      { kind: "Book", title: "The Absolute Weapon", by: "Bernard Brodie (ed.), 1946", why: "An early statement that the point of nuclear weapons is to avert war, not fight it." }
+    ],
+    stress: ["riskreducer", "npguardian"] },
+
+  { id: "modernizer", name: "The Strong-Deterrence Modernizer", c: { V: 1.6, F: 1.4, M: 1.2, P: 0.75 },
+    tag: "A credible, modern and flexible arsenal is what keeps adversaries from attacking or coercing.",
+    summary: "Modernizers think deterrence depends on adversaries believing that threats will be carried out. They favor keeping the arsenal capable and up to date, are wary of arms control with rivals who may not comply, and see strong forces as protecting allies.",
+    beliefs: [
+      "Adversaries judge capability and resolve, so weakness invites coercion.",
+      "Flexible options deter limited attacks that a single massive response would not.",
+      "Allies stay non-nuclear because they trust the protector's guarantee."
+    ],
+    asks: [
+      "Where does an arms race end, and can your approach avoid triggering the build-up it warns about?",
+      "How do you weigh accident and escalation risks against the benefits of greater readiness?",
+      "Does emphasizing nuclear options make their use more thinkable?"
+    ],
+    reads: [
+      { kind: "Book", title: "The Logic of American Nuclear Strategy", by: "Matthew Kroenig, 2018", why: "Argues that nuclear superiority still matters." },
+      { kind: "Book", title: "The Myth of the Nuclear Revolution", by: "Keir Lieber and Daryl Press, 2020", why: "Contends that technology has made damage limitation more feasible." },
+      { kind: "Report", title: "America's Strategic Posture", by: "Commission on the Strategic Posture of the United States, 2023", why: "A bipartisan commission's assessment of threats and force needs." },
+      { kind: "Book", title: "House of Cards: Why Arms Control Must Fail", by: "Colin Gray, 1992", why: "A classic skeptical case against arms control." }
+    ],
+    stress: ["abolitionist", "riskreducer"] }
+];
+
+function score(ans) {
+  const sums = { V: 0, F: 0, M: 0, P: 0 }, n = { V: 0, F: 0, M: 0, P: 0 };
+  let answered = 0;
+  ans.forEach((a, i) => {
+    if (a === undefined || a === null) return;
+    answered++;
+    const v = QUESTIONS[i].opts[a].v;
+    for (const k in v) { sums[k] += v[k]; n[k]++; }
+  });
+  const axes = {};
+  for (const k in sums) axes[k] = n[k] ? sums[k] / n[k] : null;
+  // Share of the votes an archetype could have earned on the questions actually answered.
+  const votes = {}, poss = {};
+  ARCH.forEach(a => { votes[CODE[a.id]] = 0; poss[CODE[a.id]] = 0; });
+  ans.forEach((a, i) => {
+    if (a === undefined || a === null) return;
+    for (const code in votes) {
+      poss[code] += Math.max(...VOTES[i].map(o => o[code] || 0));
+      votes[code] += VOTES[i][a][code] || 0;
+    }
+  });
+  const ranked = ARCH.map((a, idx) => {
+    const code = CODE[a.id];
+    let num = 0, den = 0;
+    for (const k in axes) {
+      if (axes[k] === null) continue;
+      num += WEIGHTS[k] * Math.pow(axes[k] - a.c[k], 2);
+      den += WEIGHTS[k];
+    }
+    const d = den ? Math.sqrt(num / den) : 99;
+    const share = poss[code] ? votes[code] / poss[code] : 0;
+    return { id: a.id, idx, d, share, key: share - 0.05 * d };
+  }).sort((x, y) => y.key - x.key);
+  return { axes, answered, ranked };
+}
+/*DATA_END*/
+
+const SUKIN_URL = "https://thebulletin.org/2026/10/the-nuclear-paradox-why-the-world-wants-both-deterrence-and-disarmament/";
+const EMAIL = "mariaclarasherwood@gmail.com";
+const ext = (u, t) => `<a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>`;
+
+const FOUNDATIONS = [
+  { kind: "Article", title: "The Nuclear Paradox: Why the World Wants Both Deterrence and Disarmament", by: "Lauren Sukin, Luis Rodriguez and Stephen Herzog, Bulletin of the Atomic Scientists, October 2026", why: "Survey evidence that many people hold deterrence and disarmament views at the same time, and why that may be reasonable.", url: SUKIN_URL },
+  { kind: "Book", title: "The Making of the Atomic Bomb", by: "Richard Rhodes, 1986", why: "How the first bombs were built and what the people building them believed." },
+  { kind: "Book", title: "The Bomb: Presidents, Generals, and the Secret History of Nuclear War", by: "Fred Kaplan, 2020", why: "How American leaders and planners have thought about nuclear war since 1945." },
+  { kind: "Book", title: "The Evolution of Nuclear Strategy", by: "Lawrence Freedman, 1981", why: "A standard survey of the strategy debates that shaped every camp here." },
+  { kind: "Data", title: "Status of World Nuclear Forces", by: "Federation of American Scientists", why: "Country-by-country estimates of warheads, kept up to date.", url: "https://fas.org/initiative/status-world-nuclear-forces/" },
+  { kind: "Blog", title: "Restricted Data: The Nuclear Secrecy Blog", by: "Alex Wellerstein", why: "Readable history of nuclear weapons, secrecy and policy.", url: "https://blog.nuclearsecrecy.com" }
+];
+
+const app = document.getElementById("app");
+const byId = Object.fromEntries(ARCH.map((a, i) => [a.id, Object.assign({ idx: i }, a)]));
+const state = { screen: "intro", i: 0, ans: Array(QUESTIONS.length).fill(undefined), timer: null };
+const KEYS = ["A", "B", "C", "D"];
+const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function ramp(hereIdx) {
+  const segs = ARCH.map((a, k) => `<span style="background:var(--c${k + 1})"${k === hereIdx ? ' class="here"' : ""}></span>`).join("");
+  const label = hereIdx >= 0 ? `Position of ${ARCH[hereIdx].name} among eight perspectives` : "Eight perspectives, from mostly a danger to mostly a safeguard";
+  return `<div class="ramp-wrap"><div class="ramp" role="img" aria-label="${label}">${segs}</div>` +
+    `<div class="ramp-ends mono"><span>Weapons as a danger</span><span>Weapons as a safeguard</span></div></div>`;
+}
+
+function readItem(r) {
+  const title = r.url ? `<a href="${r.url}" target="_blank" rel="noopener noreferrer">${r.title}</a>` : r.title;
+  return `<div class="read"><span class="mono">${r.kind}</span><cite>${title}</cite><span class="by">${r.by}</span><span class="why">${r.why}</span></div>`;
+}
+const list = (arr) => `<ul class="bul">${arr.map(x => `<li>${x}</li>`).join("")}</ul>`;
+const swatch = (idx) => `<span class="sw" style="background:var(--c${idx + 1})"></span>`;
+
+function renderIntro() {
+  app.innerHTML = `
+    <div class="stack-lg">
+      <div class="stack">
+        <p class="mono">An educational tool for people new to nuclear policy</p>
+        <h1 id="focus" tabindex="-1">Where do you land on nuclear policy?</h1>
+        <p class="lede">Twelve questions place you among eight common perspectives on nuclear policy. After, you'll receive recommended reading both confirming and disagreeing with your perspective to better understand debates.</p>
+      </div>
+      <div class="row">
+        <button class="btn" id="start">Start the quiz</button>
+        <span class="note">12 questions, about 4 minutes. Your answers stay in this tab and are not sent anywhere.</span>
+      </div>
+    </div>
+    ${howto("intro")}
+    <div class="stack">
+      <h3>The eight perspectives</h3>
+      ${ramp(-1)}
+      <ol class="persp">
+        ${ARCH.map((a, k) => `<li>${swatch(k)}<div><b>${a.name}</b><span class="t">${a.tag}</span></div></li>`).join("")}
+      </ol>
+      <p class="note">The order runs roughly from seeing nuclear weapons as a danger to seeing them as a safeguard. It is not a strict line. Views on stopping spread and on arms control cut across it. Real people mix several of these, and informed experts disagree about all of them.</p>
+    </div>
+    ${footer()}`;
+  document.getElementById("start").onclick = () => { state.screen = "quiz"; state.i = 0; render(); };
+}
+
+function howto(where) {
+  const head = where === "intro" ? "Before you start" : "Treat this as a starting point";
+  return `<div class="card"><h4>${head}</h4>
+    <p>The eight perspectives are not mutually exclusive. They overlap, each can inform and support the others, and many thoughtful people hold ideas from more than one. This quiz is a beginner's tool. It is meant to give you a better grasp of the main debates, so you can make your own decisions and keep learning.</p>
+    <p class="note">The authors of a June 2023 survey of more than 20 countries report that 57 percent of respondents held at least some combination of deterrence and disarmament views (${ext(SUKIN_URL, "Sukin, Rodriguez and Herzog, Bulletin of the Atomic Scientists, October 2026")}).</p></div>`;
+}
+
+function footer() {
+  return `<footer class="disc">
+    <p class="note">This tool is for education only. It does not recommend policy, and no perspective here is presented as the correct one. The eight perspectives are a simplified synthesis, not a standard academic typology. The reading lists were chosen to give each view a fair hearing, so check publication details before you cite them.</p>
+    <p class="note"><b>Suggestions welcome.</b> Email <span id="emailtext">${EMAIL}</span> with reading suggestions, theoretical errors you spot, or ideas for other categories and ways to improve this tool. <button class="link" id="copyemail" type="button">Copy address</button> <span id="emailmsg" role="status"></span></p>
+    <p class="note">This tool was made by coding with Claude, an AI assistant from Anthropic (claude.ai). AI assistance can introduce mistakes, which is another reason to check sources and send corrections.</p>
+  </footer>`;
+}
+
+function bindFooter() {
+  const b = document.getElementById("copyemail");
+  if (!b) return;
+  b.onclick = () => {
+    const msg = document.getElementById("emailmsg");
+    const sel = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("emailtext")); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent = "Address selected. Copy it with your keyboard."; };
+    try { navigator.clipboard.writeText(EMAIL).then(() => { msg.textContent = "Copied."; }, sel); } catch (e) { sel(); }
+  };
+}
+
+function renderQuiz() {
+  const i = state.i, Q = QUESTIONS[i], cur = state.ans[i];
+  const prog = QUESTIONS.map((_, k) => `<i class="${k <= i ? "on" : ""}"></i>`).join("");
+  app.innerHTML = `
+    <div class="stack">
+      <div class="qhead"><span class="mono">Question ${i + 1} of ${QUESTIONS.length}</span>
+        <button class="link" id="back">${i === 0 ? "Back to start" : "Previous"}</button></div>
+      <div class="prog" aria-hidden="true">${prog}</div>
+    </div>
+    <div class="stack-lg">
+      <h2 id="focus" tabindex="-1">${Q.q}</h2>
+      <p class="ctx"><span class="mono">Background</span><span>${Q.ctx}</span></p>
+      <ul class="opts">
+        ${Q.opts.map((o, k) => `<li><button class="opt" data-k="${k}" aria-pressed="${cur === k}"><span class="key">${KEYS[k]}</span><span class="txt">${o.t}</span></button></li>`).join("")}
+      </ul>
+      <div class="row"><button class="link" id="unsure" aria-pressed="${cur === null}">I'm not sure yet</button>
+        <span class="note">Skipping is fine. Keys A to D also select.</span></div>
+    </div>`;
+  document.getElementById("back").onclick = () => { clearTimeout(state.timer); if (i === 0) { state.screen = "intro"; } else { state.i--; } render(); };
+  document.getElementById("unsure").onclick = () => choose(null);
+  app.querySelectorAll(".opt").forEach(b => b.onclick = () => choose(Number(b.dataset.k)));
+}
+
+function choose(k) {
+  clearTimeout(state.timer);
+  state.ans[state.i] = k;
+  if (k !== null) {
+    app.querySelectorAll(".opt").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.k) === k)));
+  }
+  const go = () => {
+    if (state.i < QUESTIONS.length - 1) { state.i++; } else { state.screen = "results"; }
+    render();
+  };
+  if (reduceMotion || k === null) go(); else state.timer = setTimeout(go, 240);
+}
+
+function axisHTML(k, val) {
+  const ax = AXES[k];
+  const dot = val === null ? "" : `<span class="dot" style="left:${((val + 2) / 4) * 100}%"></span>`;
+  const aria = val === null ? "No answers on this dimension" : `Position ${Math.round(((val + 2) / 4) * 100)} percent from ${ax.lo} toward ${ax.hi}`;
+  return `<div class="axis"><span class="mono">${ax.name}</span>
+    <div class="track" role="img" aria-label="${aria}">${dot}</div>
+    <div class="ends"><span>${ax.lo}</span><span>${val === null ? "No answers" : ax.hi}</span></div></div>`;
+}
+
+function perspectiveBody(a) {
+  const ownReads = a.reads.map(readItem).join("");
+  return `<p>${a.summary}</p>
+    <div class="stack"><h4>What this view tends to believe</h4>${list(a.beliefs)}</div>
+    <div class="stack"><h4>Questions its critics ask</h4>${list(a.asks)}</div>
+    <div class="stack"><h4>Reading from inside this view</h4><div>${ownReads}</div></div>`;
+}
+
+function renderResults() {
+  const res = score(state.ans);
+  if (res.answered < 3) {
+    app.innerHTML = `<div class="stack-lg"><h2 id="focus" tabindex="-1">Not enough answers yet</h2>
+      <p class="lede">Answer at least three questions so the result means something. You can skip any question, but not all of them.</p>
+      <div class="row"><button class="btn" id="retake">Go back to the questions</button></div></div>`;
+    document.getElementById("retake").onclick = () => { state.screen = "quiz"; state.i = 0; render(); };
+    return;
+  }
+  const top = byId[res.ranked[0].id], second = byId[res.ranked[1].id];
+  const unsure = state.ans.filter(a => a === null).length;
+  const caution = res.answered < 8 ? `<p class="note">You answered ${res.answered} of ${QUESTIONS.length}, so treat this as a rough read.</p>` : "";
+  const stressGroups = top.stress.map(id => {
+    const s = byId[id];
+    return `<div class="stack"><div class="grp">${swatch(s.idx)}<h4>From ${s.name}</h4></div><div>${s.reads.slice(0, 2).map(readItem).join("")}</div></div>`;
+  }).join("");
+  const folds = ARCH.map((a, k) => `<details class="fold" id="fold-${a.id}">
+      <summary>${swatch(k)}<div><b style="font-family:var(--display);font-size:1.15rem;font-weight:600">${a.name}</b>${a.id === top.id ? '<span class="badge">Your match</span>' : ""}<div class="note">${a.tag}</div></div></summary>
+      <div class="fold-body">${perspectiveBody(a)}</div></details>`).join("");
+
+  app.innerHTML = `
+    <div class="stack-lg">
+      <div class="hero-name">
+        <span class="mono">Your closest match</span>
+        <h1 id="focus" tabindex="-1">${top.name}</h1>
+        <p class="tagline">${top.tag}</p>
+      </div>
+      ${ramp(top.idx)}
+      <p>${top.summary}</p>
+      ${caution}
+    </div>
+
+    <section class="sec"><h3>Where your answers sit</h3>
+      <div class="stack-lg">${["V", "F", "M", "P"].map(k => axisHTML(k, res.axes[k])).join("")}</div>
+      <p class="note">Each line averages your answers on that question. The tick in the middle is neutral.</p>
+    </section>
+
+    <section class="sec"><h3>What this view tends to believe</h3>${list(top.beliefs)}</section>
+
+    <section class="sec"><h3>Questions to put to your own view</h3>
+      <p class="note">These are the strongest challenges people on other sides raise against your position. A good test of your view is whether you can answer them fairly.</p>
+      ${list(top.asks)}</section>
+
+    <section class="sec"><h3>Read to understand your own view</h3><div>${top.reads.map(readItem).join("")}</div></section>
+
+    <section class="sec"><h3>Read to stress-test it</h3>
+      <p class="note">This is how the people who disagree with you make their case, in their own words.</p>
+      <div class="stack-lg">${stressGroups}</div></section>
+
+    <section class="sec"><h3>You are also close to</h3>
+      <div class="card"><div class="grp">${swatch(second.idx)}<h4>${second.name}</h4></div>
+        <p>${second.tag}</p>
+        <div><button class="link" id="seesecond">Read about this perspective</button></div></div>
+      ${unsure ? `<p class="note">You marked ${unsure} question${unsure === 1 ? "" : "s"} as not sure. Those did not count toward your result.</p>` : ""}</section>
+
+    <section class="sec"><h3>Mixed views are normal</h3>
+      <p>You may have felt pulled toward more than one answer. That is common. In the Sukin, Rodriguez and Herzog survey, 57 percent of respondents combined deterrence-oriented and disarmament-oriented views. The authors report that people with graduate degrees, military veterans and national security professionals showed similar or higher levels of this mix than the general public. They argue it reflects reasoning that depends on context, not confusion: someone can support deterrence today and still want fewer weapons over time.</p>
+      <p class="note">Read the full piece: ${ext(SUKIN_URL, "The Nuclear Paradox: Why the World Wants Both Deterrence and Disarmament")}.</p>
+      <p class="note">Your second match is a good place to start. Reading the perspectives on either side of yours can show where they support each other.</p></section>
+
+    <section class="sec"><h3>New to the field? Start here</h3>
+      <p class="note">These cover the history and strategy that every camp builds on.</p>
+      <div>${FOUNDATIONS.map(readItem).join("")}</div></section>
+
+    <section class="sec"><h3>Explore all eight perspectives</h3>
+      <div>${folds}</div></section>
+
+    ${howto("results")}
+    <div class="stack"><div class="row"><button class="btn" id="retake">Retake the quiz</button>
+      <button class="btn ghost" id="copy">Copy my results</button></div><div id="copyout"></div></div>
+    ${footer()}`;
+
+  document.getElementById("retake").onclick = () => { state.ans = Array(QUESTIONS.length).fill(undefined); state.i = 0; state.screen = "intro"; render(); };
+  document.getElementById("seesecond").onclick = () => {
+    const d = document.getElementById("fold-" + second.id); d.open = true; d.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  };
+  document.getElementById("copy").onclick = () => {
+    const txt = `Nuclear Policy Spectrum: I'm closest to ${top.name}, and also near ${second.name}.`;
+    const out = document.getElementById("copyout");
+    const fallback = () => { out.innerHTML = `<textarea class="cp" readonly aria-label="Your results">${txt}</textarea>`; const t = out.firstChild; t.focus(); t.select(); };
+    try { navigator.clipboard.writeText(txt).then(() => { out.innerHTML = `<p class="note">Copied.</p>`; }, fallback); } catch (e) { fallback(); }
+  };
+}
+
+function render() {
+  clearTimeout(state.timer);
+  if (state.screen === "intro") renderIntro();
+  else if (state.screen === "quiz") renderQuiz();
+  else renderResults();
+  bindFooter();
+  const f = document.getElementById("focus");
+  window.scrollTo(0, 0);
+  if (f) f.focus({ preventScroll: true });
+}
+
+document.addEventListener("keydown", (e) => {
+  if (state.screen !== "quiz" || e.metaKey || e.ctrlKey || e.altKey) return;
+  const idx = KEYS.indexOf(e.key.toUpperCase());
+  if (idx > -1 && idx < QUESTIONS[state.i].opts.length && e.key.length === 1) { e.preventDefault(); choose(idx); }
+});
+
+render();
+</script>
+
+</body></html>
